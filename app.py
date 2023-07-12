@@ -1,3 +1,3 @@
-from src.webserver import app
+from src.routes import app
 
 app.run(debug=True)

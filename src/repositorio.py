@@ -11,19 +11,19 @@ cursor = conn.cursor()
 
 # Crear tabla usuarios si no existe
 cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                (user_id TEXT NOT NULL PRIMARY KEY,
                 nombre TEXT NOT NULL,
-                correo TEXT NOT NULL,
-                user_id TEXT NOT NULL)''')
+                correo TEXT NOT NULL)''')
 
 # Guardar los cambios y cerrar la conexión
 conn.commit()
 
 # Crear tabla favoritos si no existe
 cursor.execute('''CREATE TABLE IF NOT EXISTS favoritos
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                (id_fav_meal INTEGER PRIMARY KEY AUTOINCREMENT,
                 idMeal INTEGER NOT NULL,
-                user_id TEXT NOT NULL)''')
+                user_id TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES usuarios(user_id))''')
 
 # Guardar los cambios y cerrar la conexión
 conn.commit()
@@ -96,3 +96,36 @@ def get__user_by_id(id):
 
 
 
+def add_fav():
+        # Obtener los datos del usuario desde el JSON de la solicitud
+    data = request.json
+    idMeal = data['meal_id']
+    user_id = data['user_id']
+    print(data)
+    # Conexión a la base de datos
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    # Insertar el nuevo usuario en la tabla "usuarios"
+    cursor.execute('INSERT INTO favoritos (idMeal, user_id) VALUES ( ?, ?)',
+                   (idMeal, user_id))
+    conn.commit()
+
+    # Cerrar la conexión a la base de datos
+    conn.close()
+
+    # Devolver la respuesta en formato JSON con el nuevo usuario creado y el código de estado 201 (Created)
+    return "" , 201
+
+def get_all_favs(user_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT idMeal FROM favoritos WHERE user_id = ?', (user_id,))
+    favs = cur.fetchall()
+    print(favs)
+    if favs:
+        data = [{'idMeal': dato[0]} for dato in favs]
+        conn.close()
+        return data  # Retorna el resultado en la variable data
+    else:
+        return 'No favs meals were found for this user'

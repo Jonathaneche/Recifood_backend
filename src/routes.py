@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 
 
@@ -20,7 +20,7 @@ def new_user():
      return "Usuario creado correctamente, JJ"
 
 #Obtener todos los usuarios
-@app.route('/all_users', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def getUsers():
      users = get_all_users()
      return users , "Todos los usuarios"
@@ -32,6 +32,17 @@ def getUser(id):
      return user
 
 
+#Agregar a favoritos
+@app.route('/add_favorite', methods=['POST'])
+def new_fav():
+     add_fav()
+     return "Meal recipe added successfully"
+
+
+@app.route('/get_all_favs/<user_id>', methods=['GET'])
+def get_favs(user_id):
+    data = get_all_favs(user_id)
+    return jsonify(message="Favorites meals for this user", data=data)
 
 if __name__ == "__main__":
     app.run(debug=True)

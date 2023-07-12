@@ -129,3 +129,16 @@ def get_all_favs(user_id):
         return data  # Retorna el resultado en la variable data
     else:
         return 'No favs meals were found for this user'
+
+
+def get_user_name(user_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT nombre FROM usuarios WHERE user_id = ?', (user_id,))
+    user_name = cur.fetchone()
+    conn.close()
+    if user_name:
+        data = {'nombre': user_name['nombre']}
+        return jsonify(data)
+    else:
+        return 'No user was found'

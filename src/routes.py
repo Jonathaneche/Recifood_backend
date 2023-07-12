@@ -44,5 +44,11 @@ def get_favs(user_id):
     data = get_all_favs(user_id)
     return jsonify(message="Favorites meals for this user", data=data)
 
+#Obtener todas los id de las comidas agregadas a favoritos por un usuario
+@app.route('/get_user_name/<user_id>', methods=['GET'])
+def get_name(user_id):
+    data = get_user_name(user_id)
+    return  data
+
 if __name__ == "__main__":
     app.run(debug=True)

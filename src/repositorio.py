@@ -80,18 +80,18 @@ def get_all_users():
     cur = conn.cursor()
     cur.execute('SELECT * FROM usuarios')
     datos_usuarios = cur.fetchall()
-    data = [{'id': dato[0], 'nombre': dato[1], 'correo': dato[2], 'user_id': dato[3]} for dato in datos_usuarios]
+    data = [{'user_id': dato[0], 'nombre': dato[1], 'correo': dato[2]} for dato in datos_usuarios]
     conn.close()
     return jsonify(data)
 
-def get__user_by_id(id):
-    # Obtiene una tarea específica según el ID proporcionado
-    conn = get_db_connection()
-    user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (id,)).fetchone()
-    conn.close()
-    if user:
-        return jsonify(dict(user))
-    return jsonify({'error': 'User not found'}), 404
+# def get__user_by_id(id):
+#     # Obtiene un usuario según el ID proporcionado
+#     conn = get_db_connection()
+#     user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (id,)).fetchone()
+#     conn.close()
+#     if user:
+#         return jsonify(dict(user))
+#     return jsonify({'error': 'User not found'}), 404
 
 
 

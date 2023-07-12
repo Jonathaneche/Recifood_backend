@@ -25,11 +25,11 @@ def getUsers():
      users = get_all_users()
      return users , "Todos los usuarios"
 
-#Obtener un usuario
-@app.route('/users/<int:id>', methods=['GET'])
-def getUser(id):
-     user = get__user_by_id(id)
-     return user
+# #Obtener un usuario
+# @app.route('/users/<int:id>', methods=['GET'])
+# def getUser(id):
+#      user = get__user_by_id(id)
+#      return user
 
 
 #Agregar a favoritos
@@ -38,7 +38,7 @@ def new_fav():
      add_fav()
      return "Meal recipe added successfully"
 
-
+#Obtener todas los id de las comidas agregadas a favoritos por un usuario
 @app.route('/get_all_favs/<user_id>', methods=['GET'])
 def get_favs(user_id):
     data = get_all_favs(user_id)

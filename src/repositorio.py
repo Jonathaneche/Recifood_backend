@@ -142,3 +142,12 @@ def get_user_name(user_id):
         return jsonify(data)
     else:
         return 'No user was found'
+    
+def delete_fav_meal(user_id, idMeal):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM favoritos WHERE user_id = ? AND idMeal = ?', (user_id, idMeal))
+    conn.commit()
+    conn.close()
+    print("Meal deleted correctly")
+    return ""

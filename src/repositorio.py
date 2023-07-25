@@ -134,11 +134,11 @@ def get_all_favs(user_id):
 def get_user_name(user_id):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT nombre FROM usuarios WHERE user_id = ?', (user_id,))
+    cur.execute('SELECT nombre, userAvatar FROM usuarios WHERE user_id = ?', (user_id,))
     user_name = cur.fetchone()
     conn.close()
     if user_name:
-        data = {'nombre': user_name['nombre']}
+        data = {'nombre': user_name['nombre'], 'userAvatar':user_name['userAvatar']}
         return jsonify(data)
     else:
         return 'No user was found'
@@ -151,3 +151,18 @@ def delete_fav_meal(user_id, idMeal):
     conn.close()
     print("Meal deleted correctly")
     return ""
+
+def  update_avatar(user_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    data = request.get_json()
+
+    if "userAvatar" in data:
+        userAvatar = data["userAvatar"]
+        cur.execute('UPDATE usuarios SET userAvatar = ? WHERE user_id = ?', (userAvatar, user_id))
+    
+    print("Meal deleted correctly")
+    conn.commit()
+    conn.close()
+
+    return 'User Avatar modificado'

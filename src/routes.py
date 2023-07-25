@@ -57,5 +57,10 @@ def delete_fav(user_id, idMeal):
     delete_fav_meal(user_id, idMeal)
     return "Meal deleted correctly"
 
+@app.route('/update_avatar/<user_id>', methods=['PATCH'])
+def new_avatar(user_id):
+    update_avatar(user_id)
+    return "Avatar actualizado"
+
 if __name__ == "__main__":
     app.run(debug=True)
